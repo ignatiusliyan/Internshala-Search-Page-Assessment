@@ -12,14 +12,40 @@ class internship_page extends StatefulWidget {
 
 class _internship_pageState extends State<internship_page> {
 
+  Map<String,dynamic> items ={};
+  Map<int,dynamic> profiles ={};
+  Map<int,dynamic> location ={};
+  Map<int,dynamic> duration ={};
+
+  @override
+  void initState() {
+    super.initState();
+    fetchdata();
+  }
+
 
   //Method to parse the data into json after checking the request has been succeeded
+  //Method to store the data for filters and for the search
 
   Future fetchdata() async{
     final response = await http.get(Uri.parse('https://internshala.com/flutter_hiring/search'));
 
     if (response.statusCode==200){
-      return json.decode(response.body);
+      items= json.decode(response.body);
+      for(int i =0;i<items['internship_ids'].length;i++){
+        int id = items['internship_ids'][i];
+        profiles.addAll({
+          id:items['internships_meta'][id.toString()]['title']
+        });
+        duration.addAll({
+          id:items['internships_meta'][id.toString()]['duration']
+        });
+        location.addAll({
+          id:items['internships_meta'][id.toString()]['location_names']
+        });
+      }
+      print(location);
+      return items;
     }
     else{
       throw Exception('Failed to Load Data');
@@ -56,7 +82,7 @@ class _internship_pageState extends State<internship_page> {
           onPressed: (){},
          icon: const Icon(Icons.menu),
         ),
-        title: Text('Internships',style: TextStyle(fontSize: 22),),
+        title: Text('Internship',style: TextStyle(fontSize: 22),),
         actions: [
           IconButton(
               onPressed:
@@ -102,6 +128,9 @@ class _internship_pageState extends State<internship_page> {
         else{
           return Column(
             children: <Widget>[
+
+              //Search Bar with the toggle option
+
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 height: _searchBarHeight,
@@ -126,7 +155,7 @@ class _internship_pageState extends State<internship_page> {
                               ),
                               IconButton(
                                 onPressed: (){},
-                                icon: Icon(Icons.filter_alt_outlined,size: 25,color: AppColors.primaryColor,),
+                                icon: const Icon(Icons.filter_alt_outlined,size: 25,color: AppColors.primaryColor,),
                               ),
                             ],
                           ),
@@ -153,6 +182,9 @@ class _internship_pageState extends State<internship_page> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+
+                          //List Tile to show the internship details
+
                           ListTile(
                             contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                             title: Column(
@@ -228,6 +260,9 @@ class _internship_pageState extends State<internship_page> {
           );
         }
       }),
+
+        //Dummy Bottom Navigation Bar for switching between the screen
+
         bottomNavigationBar: BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home),label: 'Home'),
