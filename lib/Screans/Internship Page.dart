@@ -20,7 +20,7 @@ class _InternshipPageState extends State<InternshipPage> {
   Map<int, dynamic> location = {};
   Map<int, dynamic> duration = {};
 
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   bool _isLoading = true;
   bool _hasError = false;
@@ -59,7 +59,6 @@ class _InternshipPageState extends State<InternshipPage> {
               .toList(),
           'internships_meta': internships['internships_meta'],
         };
-        print(filteredInternships);
       });
     }
   }
@@ -105,7 +104,7 @@ class _InternshipPageState extends State<InternshipPage> {
   }
 
   bool _isSearchBarVisible = false;
-  double _searchBarHeight = 0.0;
+  double _searchBarHeight =0;
 
   void _toggleSearchBar() {
     setState(() {
@@ -173,15 +172,15 @@ class _InternshipPageState extends State<InternshipPage> {
         actions: [
           IconButton(
             onPressed: _toggleSearchBar,
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.notifications_none),
+            icon: const Icon(Icons.notifications_none),
           ),
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.message_outlined),
+            icon: const Icon(Icons.message_outlined),
           ),
         ],
       ),
@@ -230,6 +229,9 @@ class _InternshipPageState extends State<InternshipPage> {
                                 IconButton(
                                     onPressed: () {
                                       _searchController.clear();
+                                      setState(() {
+                                        filteredInternships=internships;
+                                      });
                                     },
                                     icon: Icon(
                                       Icons.cancel_outlined,
@@ -238,7 +240,7 @@ class _InternshipPageState extends State<InternshipPage> {
                                     )),
                                 IconButton(
                                     onPressed: _openFiltersPage,
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.filter_alt_outlined,
                                       size: 22,
                                       color: AppColors.primaryColor,
@@ -294,7 +296,7 @@ class _InternshipPageState extends State<InternshipPage> {
                                                 Text(
                                                   'Actively hiring',
                                                   style:
-                                                      TextStyle(fontSize: 12),
+                                                      TextStyle(fontSize: 13),
                                                 ),
                                               ],
                                             ),
@@ -413,14 +415,14 @@ class _InternshipPageState extends State<InternshipPage> {
                                       if(filteredInternships['internships_meta'][ids.toString()]['job_segments'].isNotEmpty)
                                         Row(
                                         children: [
-                                          SizedBox(height: 25,),
+                                          const SizedBox(height: 25,),
                                             Container(
                                                 decoration: BoxDecoration(
                                                   color:Colors.grey.shade200,
                                                   border: Border.all(color: Colors.grey.shade300),
                                                   borderRadius: BorderRadius.circular(3),
                                                 ),
-                                                child: Padding(
+                                                child: const Padding(
                                                     padding: EdgeInsets.symmetric(horizontal: 5),
                                                     child: Text('Intership for Women',style: TextStyle(fontSize: 12),)),
                                               ),
@@ -429,14 +431,14 @@ class _InternshipPageState extends State<InternshipPage> {
                                       if(filteredInternships['internships_meta'][ids.toString()]['part_time'])
                                         Row(
                                           children: [
-                                            SizedBox(height: 25,),
+                                            const SizedBox(height: 25,),
                                             Container(
                                               decoration: BoxDecoration(
                                                 color:Colors.grey.shade200,
                                                 border: Border.all(color: Colors.grey.shade300),
                                                 borderRadius: BorderRadius.circular(3),
                                               ),
-                                              child: Padding(
+                                              child:const Padding(
                                                   padding: EdgeInsets.symmetric(horizontal: 5),
                                                   child: Text('Part time',style: TextStyle(fontSize: 12),)),
                                             ),

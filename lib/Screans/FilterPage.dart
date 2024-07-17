@@ -7,7 +7,7 @@ class FiltersPage extends StatefulWidget {
   final Map<int, dynamic> durations;
   final Function(Map<int, dynamic> selectedProfiles, Map<int, dynamic> selectedLocations, Map<int, dynamic> selectedDurations) onApplyFilters;
 
-  FiltersPage({
+  const FiltersPage({
     required this.profiles,
     required this.locations,
     required this.durations,
@@ -36,11 +36,14 @@ class _FiltersPageState extends State<FiltersPage> {
     final seenValues = <dynamic>{};
     final result = <int, dynamic>{};
 
+
     items.forEach((key, value) {
       if (seenValues.add(value) && value.isNotEmpty) {
         result[key] = value;
       }
     });
+
+
 
     return result;
   }
@@ -53,7 +56,7 @@ class _FiltersPageState extends State<FiltersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Filters'),
+        title: const Text('Filters'),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -70,18 +73,18 @@ class _FiltersPageState extends State<FiltersPage> {
           ),
           Row(
             children: [
-              SizedBox(height: 15,),
-              Spacer(),
+              const SizedBox(height: 15,),
+              const Spacer(),
               ElevatedButton(
 
                   onPressed: (){
                     widget.onApplyFilters(selectedProfiles, selectedLocations, selectedDurations);
                     Navigator.pop(context);
-                  }, child:Text('Apply Filters')),
-              Spacer(),
+                  }, child:const Text('Apply Filters')),
+              const Spacer(),
             ],
           ),
-          SizedBox(height: 30,),
+          const SizedBox(height: 30,),
         ],
       ),
     );
@@ -89,26 +92,61 @@ class _FiltersPageState extends State<FiltersPage> {
 
   Widget _buildFilterSection(String title, Map<int, dynamic> items, Map<int, dynamic> selectedItems) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ExpansionTile(
-          title: Text(title),
-          children: items.entries.map((entry) {
-            return CheckboxListTile(
-              activeColor: AppColors.primaryColor,
-              title: Text(entry.value.toString()),
-              value: selectedItems.containsKey(entry.key),
-              onChanged: (bool? value) {
-                setState(() {
-                  if (value == true) {
-                    selectedItems[entry.key] = entry.value.toString();
-                  } else {
-                    selectedItems.remove(entry.key);
-                  }
-                });
-              },
-            );
-          }).toList(),
+        Padding(
+            padding:const EdgeInsets.all(8),
+            child: Row(
+              children: [
+                const Text('Filter by  '),
+                Text(title,style: const TextStyle(fontSize: 15,color: AppColors.primaryColor),)
+              ],
+            )),
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                width: 1.5,
+                color: Colors.grey.shade400
+              )
+          
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: ExpansionTile(
+                backgroundColor: Colors.transparent,
+                collapsedBackgroundColor: Colors.transparent,
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(color: Colors.transparent),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                collapsedShape: RoundedRectangleBorder(
+                  side: const BorderSide(color: Colors.transparent),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                title: Text(title),
+                children: items.entries.map((entry) {
+                  return CheckboxListTile(
+                    activeColor: AppColors.primaryColor,
+                    title: Text(entry.value.toString().replaceAll('[', '').replaceAll(']','')),
+                    value: selectedItems.containsKey(entry.key),
+                    onChanged: (bool? value) {
+                      setState(() {
+                        if (value == true) {
+                          selectedItems[entry.key] = entry.value.toString();
+                        } else {
+                          selectedItems.remove(entry.key);
+                        }
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
         ),
 
       ],

@@ -19,14 +19,14 @@ class _splash_screenState extends State<splash_screen> {
     // TODO: implement initState
     super.initState();
 
-    Timer(Duration(milliseconds: 500),(){
+    Timer(const Duration(milliseconds: 500),(){
       setState(() {
         opacity = 1.0 ;
       });
     });
     Timer(
-        Duration(milliseconds: 2500),()=>Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder:(BuildContext context) =>InternshipPage()))
+        const Duration(milliseconds: 2500),()=>Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder:(BuildContext context) =>const InternshipPage()))
     );
   }
 
@@ -41,7 +41,7 @@ class _splash_screenState extends State<splash_screen> {
           Center(
             child: AnimatedOpacity(
                 opacity:opacity,
-                duration: Duration(milliseconds: 700),
+                duration: const Duration(milliseconds: 700),
                 child: Image.asset('assets/images/logo.jpg',scale: 5,)),
           )
         ],
