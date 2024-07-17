@@ -26,7 +26,7 @@ class _splash_screenState extends State<splash_screen> {
     });
     Timer(
         Duration(milliseconds: 2500),()=>Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder:(BuildContext context) =>internship_page()))
+        MaterialPageRoute(builder:(BuildContext context) =>InternshipPage()))
     );
   }
 
