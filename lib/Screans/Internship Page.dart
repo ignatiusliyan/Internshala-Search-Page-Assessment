@@ -106,6 +106,8 @@ class _InternshipPageState extends State<InternshipPage> {
   bool _isSearchBarVisible = false;
   double _searchBarHeight =0;
 
+
+
   void _toggleSearchBar() {
     setState(() {
       _isSearchBarVisible = !_isSearchBarVisible;
@@ -145,6 +147,15 @@ class _InternshipPageState extends State<InternshipPage> {
           selectedDurations.isEmpty || selectedDurations.containsKey(id);
       return matchesProfile && matchesLocation && matchesDuration;
     }).toList();
+
+    if(matchingIds.isEmpty){
+      const SnackBar noresult=SnackBar(
+        backgroundColor: AppColors.primaryColor,
+          duration:Duration(seconds: 2),
+          content: Text('No results found',style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),));
+
+      ScaffoldMessenger.of(context).showSnackBar(noresult);
+    }
 
     setState(() {
       filteredInternships = {
@@ -251,7 +262,7 @@ class _InternshipPageState extends State<InternshipPage> {
                         ),
                       ),
                     Expanded(
-                      child: ListView.builder(
+                      child:ListView.builder(
                         itemCount: filteredInternships['internship_ids'].length,
                         itemBuilder: (BuildContext context, int index) {
                           int ids =
